@@ -6,8 +6,7 @@ const EmptyError = require('../errors/EmptyError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const userInfo = (req, res, next) => {
-  const { name } = req.user;
-  User.findOne({ name })
+  User.findById({ _id: req.user._id })
     .then((user) => {
       res.status(200).send({
         name: user.name,
