@@ -1,4 +1,5 @@
 const Article = require('../models/article');
+const ForbbienError = require('../errors/ForbbienError');
 
 const getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
@@ -29,7 +30,24 @@ const postArticle = (req, res, next) => {
     .catch(next);
 };
 
+const deleteArticle = (req, res, next) => {
+  Article.findById(req.params.articleId)
+    .populate('owner')
+    .orFail((error) => error)
+    .then((article) => {
+      if (article.owner._id.toString() !== req.user._id) {
+        throw new ForbbienError('доступ запрещён');
+      }
+      return article.remove()
+        .then(() => {
+          res.send({ delete: article });
+        });
+    })
+    .catch(next);
+};
+
 module.exports = {
   getArticles,
   postArticle,
+  deleteArticle,
 };
