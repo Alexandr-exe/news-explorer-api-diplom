@@ -3,7 +3,7 @@ const validator = require('validator');
 
 const { Schema } = mongoose;
 
-const articleSchema = new mongoose.Schema({
+const articleSchema = new Schema({
   keyword: {
     type: String,
     required: true,
@@ -46,6 +46,7 @@ const articleSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true,
+    select: false,
   },
 },
 {
