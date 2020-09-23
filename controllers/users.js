@@ -6,10 +6,13 @@ const EmptyError = require('../errors/EmptyError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const userInfo = (req, res, next) => {
-  const { name, email } = req.user;
+  const { name } = req.user;
   User.findOne({ name })
     .then((user) => {
-      res.status(200).send({ user: { name, email } });
+      res.status(200).send({
+        name: user.name,
+        email: user.email,
+      });
     })
     .catch(next);
 };
