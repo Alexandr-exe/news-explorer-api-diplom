@@ -1,12 +1,15 @@
 const Article = require('../models/article');
+const NotFoundError = require('../errors/NotFoundError');
 const ForbbienError = require('../errors/ForbbienError');
 
 const getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
     .then((article) => {
-      res.status(200).send({
-        data: article,
-      });
+      if (article) {
+        res.send({ article });
+        return;
+      }
+      throw new NotFoundError('Карточек нет');
     })
     .catch(next);
 };
@@ -32,9 +35,11 @@ const postArticle = (req, res, next) => {
 
 const deleteArticle = (req, res, next) => {
   Article.findById(req.params.articleId)
-    .populate('owner')
     .orFail((error) => error)
     .then((article) => {
+      if (!article) {
+        throw new NotFoundError('Нет сохранённых статей');
+      }
       if (article.owner._id.toString() !== req.user._id) {
         throw new ForbbienError('доступ запрещён');
       }

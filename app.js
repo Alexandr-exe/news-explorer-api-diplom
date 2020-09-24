@@ -9,7 +9,8 @@ const { celebrate, Joi, errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
-const user = require('./routers/users');
+const users = require('./routers/users');
+const articles = require('./routers/articles');
 const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
@@ -54,7 +55,9 @@ app.post('/signin', celebrate({
 
 app.use(auth);
 
-app.use('/user', user);
+app.use('/users', users);
+app.use('/articles', articles);
+
 app.use((req, res) => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
