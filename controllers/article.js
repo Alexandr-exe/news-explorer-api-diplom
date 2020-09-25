@@ -35,6 +35,7 @@ const postArticle = (req, res, next) => {
 
 const deleteArticle = (req, res, next) => {
   Article.findById(req.params.articleId)
+    .populate('owner')
     .orFail((error) => error)
     .then((article) => {
       if (!article) {
