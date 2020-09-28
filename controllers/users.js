@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const EmptyError = require('../errors/EmptyError');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_KEYS } = require('../config');
 
 const userInfo = (req, res, next) => {
   User.findById({ _id: req.user._id })
@@ -44,8 +44,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-key',
+      const token = jwt.sign({ _id: user._id }, JWT_KEYS,
         { expiresIn: '7d' });
       res
         .cookie('jwt', token, {
