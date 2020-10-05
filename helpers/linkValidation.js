@@ -1,9 +1,9 @@
 const validator = require('validator');
-const LinkError = require('../errors/LinkError');
+const BadRequest = require('../errors/BadRequest');
 
 const linkValidator = (link) => {
   if (!validator.isURL(link)) {
-    throw new LinkError('link is not valid');
+    throw new BadRequest('link is not valid');
   }
   return link;
 };
