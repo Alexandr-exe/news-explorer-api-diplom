@@ -36,7 +36,7 @@ const postArticle = (req, res, next) => {
 const deleteArticle = (req, res, next) => {
   Article.findById(req.params.articleId)
     .populate('owner')
-    .orFail((error) => error)
+    .orFail(() => { throw new NotFoundError('Нет такой карточки'); })
     .then((article) => {
       if (!article) {
         throw new NotFoundError('Нет сохранённых статей');

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const EmptyError = require('../errors/EmptyError');
+const BadRequest = require('../errors/BadRequest');
 
 const { JWT_KEYS } = require('../config');
 
@@ -20,9 +20,8 @@ const createUser = (req, res, next) => {
   const {
     name, email, password,
   } = req.body;
-  const regexp = /[\W]+/i;
-  if (!password || regexp.test(password)) {
-    throw new EmptyError('Пароль либо пуст, либо содержит не верное значение');
+  if (!password || !password.trim()) {
+    throw new BadRequest('Пароль либо пуст, либо содержит не верное значение');
   }
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
