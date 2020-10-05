@@ -28,7 +28,7 @@ const validationPostArticleBody = celebrate({
   }),
 });
 
-const validationDeleteArticle = celebrate({
+const validationDeleteArticleBody = celebrate({
   params: Joi.object().keys({
     articleId: Joi.string().hex().length(24),
   }),
@@ -38,5 +38,5 @@ module.exports = {
   validateUserCreatBody,
   validationLoginBody,
   validationPostArticleBody,
-  validationDeleteArticle,
+  validationDeleteArticleBody,
 };

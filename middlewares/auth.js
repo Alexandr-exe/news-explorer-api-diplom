@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_KEYS } = require('../config');
 const AuthorizationError = require('../errors/AuthorizationError');
 
-const handleAuthError = (res) => {
+const handleAuthError = () => {
   throw new AuthorizationError('Ошибка авторизации');
 };
 
