@@ -23,6 +23,7 @@
     "celebrate": "^13.0.3",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
+    "cors": "^2.8.5",
     "eslint-plugin-import": "^2.22.0",
     "expess": "0.0.1-security",
     "express": "^4.17.1",

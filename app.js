@@ -5,11 +5,21 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { errors } = require('celebrate');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { limiter } = require('./middlewares/limiter');
+
+const corsOptions = {
+  origin: ['https://api.apinews.xyz', 'http://localhost:8080', 'https://alexandr-exe.github.io'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'x-requested-with', 'origin', 'accept', 'x-access-token', 'Authorization'],
+  credentials: true,
+};
 
 const { PORT, DATABASE_URL } = require('./config');
 
@@ -30,6 +40,7 @@ mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
 });
 
+app.use('*', cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
