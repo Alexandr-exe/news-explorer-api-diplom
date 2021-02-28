@@ -58,8 +58,19 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
+const exit = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_KEYS, { expiresIn: '7d' });
+      res.cookie('jwt', token, { maxAge: 0, httpOnly: true, sameSite: true });
+      return res.send({ token });
+    })
+    .catch((err) => next(err));
+};
+
 module.exports = {
   createUser,
   login,
   userInfo,
+  exit,
 };
